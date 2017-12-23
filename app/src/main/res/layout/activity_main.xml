@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.liam.bing_wallpaper.components.main.MainActivity">
 
-    <com.github.chrisbanes.photoview.PhotoView
+    <com.alexvasilkov.gestures.views.GestureImageView
         android:id="@+id/photoView"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -15,29 +15,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/copyright"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#70000000"
-        android:paddingBottom="8dp"
-        android:paddingEnd="12dp"
-        android:paddingStart="12dp"
-        android:paddingTop="8dp"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="'Siberian jay, Putorana Plateau, Siberia, Russia (© Sergey Gorshkov/Minden Pictures)" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/copyright"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fitsSystemWindows="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#68000000"
+            android:paddingBottom="8dp"
+            android:paddingEnd="12dp"
+            android:paddingStart="12dp"
+            android:paddingTop="8dp"
+            android:textColor="@android:color/white"
+            tools:text="'Siberian jay, Putorana Plateau, Siberia, Russia (© Sergey Gorshkov/Minden Pictures)" />
+
+    </FrameLayout>
 
 </android.support.constraint.ConstraintLayout>

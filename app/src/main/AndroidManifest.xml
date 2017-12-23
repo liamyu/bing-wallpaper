@@ -19,7 +19,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".components.main.MainActivity">
+        <activity
+            android:name=".components.main.MainActivity"
+            android:theme="@style/Immersive">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

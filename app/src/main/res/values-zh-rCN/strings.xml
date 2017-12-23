@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">必应壁纸</string>
+    <string name="apply">应用</string>
+    <string name="alert_msg">设为桌面壁纸?</string>
 </resources>
