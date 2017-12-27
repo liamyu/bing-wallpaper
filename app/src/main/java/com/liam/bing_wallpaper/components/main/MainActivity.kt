@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         if (resDrawable == null) {
             return
         }
-        var wallpaperManager = WallpaperManager.getInstance(applicationContext)
+        val wallpaperManager = WallpaperManager.getInstance(applicationContext)
         wallpaperManager.setBitmap(resDrawable!!.toBitmap())
     }
 
