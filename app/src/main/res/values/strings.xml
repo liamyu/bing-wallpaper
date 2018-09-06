@@ -1,5 +1,11 @@
 <resources>
-    <string name="app_name">Bing Wall</string>
-    <string name="apply">apply</string>
-    <string name="alert_msg">Set as wallpaper?</string>
+  <string name="app_name">Bing Wall</string>
+  <string name="apply">apply</string>
+  <string name="download">download</string>
+  <string name="alert_msg">Set as wallpaper?</string>
+  <string formatted="false" name="save_success">Image saved to: Internal Storage/%s</string>
+  <string name="save_failed">Save image failed</string>
+  <string name="set_wallpaper_success">Wallpaper set successfully.</string>
+  <string name="request_storage_permission">Please allow BingWall to write external
+    storage to save images.</string>
 </resources>

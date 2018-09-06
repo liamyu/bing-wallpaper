@@ -1,6 +1,6 @@
 package com.liam.bing_wallpaper.components.main
 
-import android.support.annotation.WorkerThread
+import androidx.annotation.WorkerThread
 import com.liam.bing_wallpaper.entity.BingImage
 import com.liam.bing_wallpaper.entity.BingImageList
 import com.liam.bing_wallpaper.repo.BingRepository

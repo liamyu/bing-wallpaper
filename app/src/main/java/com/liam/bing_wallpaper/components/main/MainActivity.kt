@@ -1,28 +1,41 @@
 package com.liam.bing_wallpaper.components.main
 
+import android.Manifest
 import android.app.WallpaperManager
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.alexvasilkov.gestures.GestureController
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.android.material.snackbar.Snackbar
 import com.liam.bing_wallpaper.R
 import com.liam.bing_wallpaper.common.GlideApp
+import com.liam.bing_wallpaper.common.getNavigationBarHeight
+import com.liam.bing_wallpaper.common.saveTo
 import com.liam.bing_wallpaper.common.toBitmap
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
+    private val PERMISSIONS_REQUEST = 1
     private val viewModel: MainViewModel = MainViewModel()
     private var resDrawable: Drawable? = null
 
@@ -66,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     /**Display image.*/
     private fun displayImage(url: String) {
         GlideApp.with(this)
-                .load("https://www.bing.com$url")
+                .load("http://www.bing.com$url".replace("1080", "1200"))
                 .centerInside()
                 .listener(object : RequestListener<Drawable?> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable?>?, isFirstResource: Boolean): Boolean {
@@ -89,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
         val wallpaperManager = WallpaperManager.getInstance(applicationContext)
         wallpaperManager.setBitmap(resDrawable!!.toBitmap())
+        Toast.makeText(this, R.string.set_wallpaper_success, Toast.LENGTH_SHORT).show()
     }
 
     private fun toggleImmersiveMode() {
@@ -134,13 +148,61 @@ class MainActivity : AppCompatActivity() {
             R.id.action_apply -> {
                 AlertDialog.Builder(this)
                         .setMessage(R.string.alert_msg)
-                        .setPositiveButton(android.R.string.ok, { _, _ -> setAsWallPaper() })
+                        .setPositiveButton(android.R.string.ok) { _, _ -> setAsWallPaper() }
                         .setNegativeButton(android.R.string.cancel, null)
                         .create()
                         .show()
                 true
             }
+            R.id.action_download -> {
+                // 检查读取内部存储、电话权限
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) === PackageManager.PERMISSION_GRANTED) {
+                    saveToSdCard()
+                } else {
+                    // Should we show an explanation?
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                        // sees the explanation, try again to request the permission.
+                        Toast.makeText(this, R.string.request_storage_permission, Toast.LENGTH_LONG)
+                    }
+                    ActivityCompat.requestPermissions(
+                            this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            PERMISSIONS_REQUEST)
+                }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun saveToSdCard() {
+        if (resDrawable == null) {
+            return
+        }
+        val dir = "Pictures/BingWall"
+        val name = SimpleDateFormat("yyyyMMdd", Locale.US).format(Date()) + ".png"
+        if (resDrawable!!.toBitmap().saveTo(this, dir, name)) {
+            val msg = String.format(Locale.US, getString(R.string.save_success),
+                    dir + File.separator + name)
+            Snackbar.make(copyright, msg, Snackbar.LENGTH_LONG)
+                    .apply {
+                        view.layoutParams = (view.layoutParams as FrameLayout.LayoutParams)
+                                .apply {
+                                    setMargins(leftMargin, topMargin, rightMargin, getNavigationBarHeight())
+                                }
+                    }
+                    .show()
+        } else {
+            Toast.makeText(this, R.string.save_failed, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSIONS_REQUEST) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveToSdCard()
+            }
         }
     }
 

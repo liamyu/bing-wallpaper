@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">必应墙</string>
-    <string name="apply">应用</string>
-    <string name="alert_msg">设为桌面壁纸?</string>
+  <string name="app_name">必应墙</string>
+  <string name="apply">应用</string>
+  <string name="download">下载</string>
+  <string name="alert_msg">设为桌面壁纸?</string>
+  <string name="save_success">图片保存到：内部存储/%s</string>
+  <string name="save_failed">图片保存失败</string>
+  <string name="set_wallpaper_success">壁纸设置成功</string>
+  <string name="request_storage_permission">请允许写入外部存储权限来保存图片.</string>
 </resources>
